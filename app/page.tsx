@@ -5,7 +5,14 @@ import { motion, useScroll, useTransform, useInView } from "framer-motion"
 import { Heart, Sparkles, Camera } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import InteractiveHeart from "@/components/interactive-heart"
-
+const photos = [
+  "/image1.jpg",
+  "/image2.jpg",
+  "/image3.jpg",
+  "/image4.jpg",
+  "/image5.jpg",
+  "/image6.jpg",
+]
 export default function AnniversaryWebsite() {
   const { scrollYProgress } = useScroll()
   const heroRef = useRef(null)
@@ -18,6 +25,8 @@ export default function AnniversaryWebsite() {
   const galleryInView = useInView(galleryRef, { once: true })
   const messageInView = useInView(messageRef, { once: true })
 
+  
+
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "200%"])
 
@@ -25,10 +34,10 @@ export default function AnniversaryWebsite() {
   const FloatingHeart = ({ delay = 0, duration = 3, size = 20 }) => (
     <motion.div
       className="absolute text-pink-400"
-      initial={{ y: "100vh", x: Math.random() * window.innerWidth, opacity: 0 }}
+      initial={{ y: "100vh", x: Math.random() , opacity: 0 }}
       animate={{
         y: "-100vh",
-        x: Math.random() * window.innerWidth,
+        x: Math.random() ,
         opacity: [0, 1, 1, 0],
         rotate: [0, 360],
       }}
@@ -201,26 +210,31 @@ export default function AnniversaryWebsite() {
           </motion.h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
-                animate={galleryInView ? { opacity: 1, scale: 1, rotate: 0 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05, rotate: 2 }}
-                className="relative group"
-              >
-                <div className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform">
-                  <div className="aspect-square bg-gradient-to-br from-pink-200 to-rose-300 rounded-lg flex items-center justify-center relative overflow-hidden">
-                    <Camera size={40} className="text-white/70" />
-                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Heart size={30} className="text-white" fill="currentColor" />
-                    </div>
-                  </div>
-                  <p className="text-center mt-3 text-gray-700 font-medium">Memory #{index + 1}</p>
-                </div>
-              </motion.div>
-            ))}
+            {photos.map((src, index) => (
+  <motion.div
+    key={index}
+    initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+    animate={galleryInView ? { opacity: 1, scale: 1, rotate: 0 } : {}}
+    transition={{ duration: 0.6, delay: index * 0.1 }}
+    whileHover={{ scale: 1.05, rotate: 2 }}
+    className="relative group"
+  >
+    <div className="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform">
+      <div className="aspect-square bg-gradient-to-br from-pink-200 to-rose-300 rounded-lg flex items-center justify-center relative overflow-hidden">
+        <img
+          src={src}
+          alt={`Memory ${index + 1}`}
+          className="object-cover w-full h-full rounded-lg transition-transform duration-300 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <Heart size={30} className="text-white" fill="currentColor" />
+        </div>
+      </div>
+      <p className="text-center mt-3 text-gray-700 font-medium">Memory #{index + 1}</p>
+    </div>
+  </motion.div>
+))}
+
           </div>
         </div>
       </section>
